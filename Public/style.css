@@ -58,3 +58,22 @@ li{
     padding: 10px;
     border-bottom: 1px solid #ccc;
 }
+
+li.completed{
+    text-decoration: line-through;
+    color: #777;
+}
+
+.remove-btn{
+    background: #dc3545;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.remove-btn:hover{
+    background: #941c28;
+    
+}
