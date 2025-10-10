@@ -11,45 +11,38 @@ class Task{
 
 class TaskManager{
     constructor(){
-        this.tasks = [];
+        this.taskList = document.getElementById('task-list')
+        this.loadTasks();
     }
 
-    addTask(description){
-        const task = new Task(description);
-        this.tasks.push(task);
-        this.displayTask();
+    async loadTasks(){
+        const response = await fetch('/tasks');
+        const tasks = await response.json();
+        this.render(tasks);
     }
 
-    removeTask(index){
-        this.tasks.splice(index, 1);
-        this.displayTask();
+    async addTask(description){
+        await fetch('/tasks', {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({ description })
+        });
+        this.loadTasks();
+    }
+    async removeTask(id){
+        await fetch(`/tasks/${id}`, {method: 'DELETE'});
+        this.loadTasks();
     }
 
-    toggleTaskCompletion(index){
-        this.tasks[index].toggleComplete();
-        this.displayTask();
+    async toggleTask(id){
+        await fetch(`/tasks/${id}/toggle`, {method: 'PATCH'});
     }
 
-    displayTask(){
-        const taskList = document.getElementById('task-list');
-        taskList.innerHTML = '';
+    render(tasks){
+        this.taskList.innerHTML = '';
 
-        this.tasks.forEach((task, index) => {
-            const taskItem = document.createElement('li');
-            taskItem.className = task.completed ? 'completed' : '';
-
-            const taskDescription = document.createElement('span');
-            taskDescription.textContent = taskDescription;
-            taskDescription.addEventListener('click', () => this.toggleTaskCompletion(index));
-
-            const removeButton = document.createElement('button');
-            removeButton.className = 'remove-btn';
-            removeButton.textContent = 'Remove';
-            removeButton.addEventListener('click', () => this.removeTask(index));
-
-            taskItem.appendChild(taskDescription);
-            taskItem.appendChild(removeButton);
-            taskItem.appendChild(taskItem);
+        tasks.forEach(task => {
+            const li = document.createElement('li');
         })
     }
 }
