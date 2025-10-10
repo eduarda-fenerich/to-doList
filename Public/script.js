@@ -43,7 +43,20 @@ class TaskManager{
 
         tasks.forEach(task => {
             const li = document.createElement('li');
-        })
+            li.className = task.completed ? 'completed' : '';
+
+            const span = document.createElement('button');
+            span.textContent = task.description;
+            span.addEventListener('click', () => this.toggleTask(task.id));
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.textContent = 'Remove';removeBtn.addEventListener('click', () => this.removeTask(task.id));
+
+            li.appendChild(span);
+            li.appendChild(removeBtn);
+            this.taskList.appendChild(li);
+        });
     }
 }
 

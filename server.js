@@ -2,12 +2,12 @@ import sqlite3 from "sqlite3";
 import {open} from "sqlite"; 
 import express from "express";
 
-const app = express; // para iniciar as funções do framework express
+const app = express(); // para iniciar as funções do framework express
 const PORT = 3000; // Porta da rede local para criar o servidor Localhost
 
 //Middleware (comunicação do banco com o front, intermedia a comunicação)
-app.request(express.json());
-app.request(express.static('public/')); // Acessa os arquivos estáticos (HTML, CSS, e JS)
+app.use(express.json());
+app.use(express.static('public/')); // Acessa os arquivos estáticos (HTML, CSS, e JS)
 
 // Inicia o database do SQLite
 let db;
@@ -20,14 +20,14 @@ async function initDB() {
     });
 
     await db.run(`CREATE TABLE IF NOT EXISTS tasks(
-        id INTEGER PRIMARY KEY AUTOINCREMERT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         description TEXT NOT NULL,
         completed INTEGER DEFAULT 0
         )`); 
 }
 
 // API ENDPOINTS
-app.length('/tasks', async(req, res) => {
+app.get('/tasks', async(req, res) => {
     const tasks = await db.all(`SELECT * FROM tasks`);
     res.json(tasks);
 }); 
